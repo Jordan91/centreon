@@ -81,8 +81,8 @@
                 </span>
             </td>
             <td class="ListColCenter">{$elemArr[elem].RowMenu_pid}</td>
-            <td class="ListColCenter">{$elemArr[elem].RowMenu_startTime}</td>
-            <td class="ListColCenter"{if $elemArr[elem].RowMenu_statusVal == 1} style='background-color:#{if $elemArr[elem].RowMenu_lastUpdateTimeFlag}F7D507;{/if}'{/if}>{$elemArr[elem].RowMenu_lastUpdateTime}</td>
+            <td class="ListColCenter isTimestamp">{$elemArr[elem].RowMenu_startTime}</td>
+            <td class="ListColCenter isTimestamp"{if $elemArr[elem].RowMenu_statusVal == 1} style='background-color:#{if $elemArr[elem].RowMenu_lastUpdateTimeFlag}F7D507;{/if}'{/if}>{$elemArr[elem].RowMenu_lastUpdateTime}</td>
             <td class="ListColCenter">{$elemArr[elem].RowMenu_version}</td>
             <td class="ListColCenter">{$elemArr[elem].RowMenu_is_default}</td>
             <td class="ListColCenter"><span class="badge {$elemArr[elem].RowMenu_badge}">{$elemArr[elem].RowMenu_status}</span></td>
@@ -128,4 +128,19 @@
     setDisabledRowStyle();
 
 </script>
+<script type='text/javascript'>
+
+    // get locale GMT preferences from localStorage
+    var userTimezone = localStorage.getItem('realTimezone');
+
+    // use of moment() to format dates on foreach occurences
+    jQuery(".isTimestamp").each(function(index, element) {
+        var myElement = jQuery(element);
+        var currentDate = parseInt(myElement.text()) * 1000;
+        if (!isNaN(currentDate)){
+            myElement.text(moment(currentDate).tz(userTimezone).format('LL LTS'));
+        }
+    });
+</script>
+
 {/literal}

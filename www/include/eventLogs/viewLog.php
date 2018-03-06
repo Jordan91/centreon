@@ -419,7 +419,9 @@ function logsEngine(type) {
             '&limit=' + _limit + '&id=' + args;
         proc.setXml(_addr)
         proc.setXslt(_addrXSL)
+        proc.setCallback(formatDateMoment);
         proc.transform("logView4xml");
+        formatDateMoment();
     } else {
         if (type == 'CSV') {
             var _addr = './include/eventLogs/export/data.php?engine=true&output=' + _output +
@@ -502,6 +504,7 @@ function logs(id, formu, type) {
             } ?>';
         proc.setXml(_addr)
         proc.setXslt(_addrXSL)
+        proc.setCallback(formatDateMoment);
         proc.transform("logView4xml");
     } else {
         var openid = document.getElementById('openid').innerHTML;
@@ -799,4 +802,23 @@ jQuery(function () {
         });
     }
     });
+
+
+// get locale GMT preferences from localStorage
+var userTimezone = localStorage.getItem('realTimezone');
+
+// use of moment() to format dates for each occurence
+function formatDateMoment() {
+    jQuery(".isTimestamp").each(function(index, element) {
+        var myElement = jQuery(element);
+        var currentDate = parseInt(myElement.text()) * 1000;
+
+        if (myElement.hasClass("isTime")) {
+            myElement.text(moment(currentDate).tz(userTimezone).format('LTS'));
+        } else if (myElement.hasClass("isDate")) {
+            myElement.text(moment(currentDate).tz(userTimezone).format('LL'));
+        }
+    });
+};
+
 </script>

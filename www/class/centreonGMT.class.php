@@ -226,7 +226,37 @@ class CentreonGMT
         
         return $return;
     }
-    
+
+    /**
+     * @param $date
+     * @param null $gmt
+     * @return int|string
+     */
+    public function getCurrentTime($date, $gmt = null)
+    {
+        $return = "";
+        if (!$date) {
+            $date = "N/A";
+        }
+        if ($date == "N/A") {
+            return $date;
+        }
+
+        if (!isset($gmt)) {
+            $gmt = $this->myGMT;
+        }
+
+        if (isset($date) && isset($gmt)) {
+            $sDate = new DateTime();
+            $sDate->setTimestamp($date);
+            $sDate->setTimezone(new DateTimeZone($this->getActiveTimezone($gmt)));
+            $return = $sDate->getTimestamp();
+        }
+
+        return $return;
+    }
+
+
     /**
      *
      * @param type $date

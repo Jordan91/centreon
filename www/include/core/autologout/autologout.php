@@ -25,15 +25,30 @@ function change_status(xhr2) {
 	var docXML= xhr2.responseXML;
 	var items_state = docXML.getElementsByTagName("state");
 	var items_time = docXML.getElementsByTagName("time");
+    var timezoneItem = docXML.getElementsByTagName("timezone");
+    var realTimezone = timezoneItem.item(0).firstChild.data;
 	var state = items_state.item(0).firstChild.data;
 	var currentTime = items_time.item(0).firstChild.data;
 
+    // storing user's local timezone to the localStrorage
+    localStorage.setItem('realTimezone', realTimezone);
+
 	if (state == "ok") {
 		if (document.getElementById('date')) {
-			document.getElementById('date').innerHTML = currentTime;
+			dateLocale(realTimezone, currentTime);
+
 		}
 	} else if (state == "nok") {
 		window.location.replace("./index.php");
 	}
 	setTimeout("check_session()", <?php echo $tM; ?>);
+}
+
+//add the locale timezone offset to the displayed hours
+function dateLocale(timezone,currentTime){
+    //converting currentTime to int for moment
+    var userLocale = localStorage.getItem('locale');
+    var userTime = parseInt(currentTime, 10);
+    var userDisplay = moment.unix(userTime).tz(timezone).locale(userLocale);
+    jQuery("#date").text(userDisplay.format('LLL'));
 }

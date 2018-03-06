@@ -64,11 +64,11 @@
                             </tr>
                             <tr class='list_one'>
                                 <td class="ListColLeft ColPopup">{$m_mon_host_last_check}</td>
-                                <td class="ListColLeft ColPopup">{$service_data.last_check}</td>
+                                <td class="ListColLeft ColPopup isTimestamp">{$service_data.last_check}</td>
                             </tr>
                             <tr class='list_two'>
                                 <td class="ListColLeft ColPopup">{$m_mon_services_active_check}</td>
-                                <td class="ListColLeft ColPopup">{$service_data.next_check}</td>
+                                <td class="ListColLeft ColPopup isTimestamp">{$service_data.next_check}</td>
                             </tr>
                             <tr class='list_one'>
                                 <td class="ListColLeft ColPopup">{$m_mon_services_latency}</td>
@@ -80,7 +80,7 @@
                             </tr>
                             <tr class='list_one'>
                                 <td class="ListColLeft ColPopup">{$m_mon_last_change}</td>
-                                <td class="ListColLeft ColPopup">{$service_data.last_state_change}</td>
+                                <td class="ListColLeft ColPopup{if ($service_data.last_state_change == 0)}"> {else} isTimestamp">{$service_data.last_state_change}{/if}</td>
                             </tr>
                             <tr class='list_two'>
                                 <td class="ListColLeft ColPopup">{$m_mon_current_state_duration}</td>
@@ -88,7 +88,8 @@
                             </tr>
                             <tr class='list_one'>
                                 <td class="ListColLeft ColPopup">{$m_mon_last_notification_serv}</td>
-                                <td class="ListColLeft ColPopup">{if $service_data.last_notification}{$service_data.last_notification}{/if}</td>
+                                <td class="ListColLeft ColPopup" id="last_notification_value"></td>
+                                {* <td class="ListColLeft ColPopup">{if $service_data.last_notification}{$service_data.last_notification}{/if}</td> *}
                             </tr>
                             <tr class='list_two'>
                                 <td class="ListColLeft ColPopup">{$m_mon_notification_nb}</td>
@@ -108,7 +109,7 @@
                             </tr>
                             <tr class='list_two'>
                                 <td class="ListColLeft ColPopup">{$m_mon_last_update}</td>
-                                <td class="ListColLeft ColPopup">{$service_data.last_update}</td>
+                                <td class="ListColLeft ColPopup{if ($service_data.last_update == 0)}"> {else} isTimestamp">{$service_data.last_update} {/if}</td>
                             </tr>
                             {if $service_data.command_line}
                             <tr class='list_one'>
@@ -646,5 +647,32 @@ var clipboard = new Clipboard('.btn-copy', {
     return command.replace(re,' ');
   }
 });
+</script>
+<script type='text/javascript'>
+
+    // get locale GMT preferences from localStorage
+    var userTimezone = localStorage.getItem('realTimezone');
+
+    // using moment() to format dates
+    jQuery(".isTimestamp").each(function(index, element) {
+        var myElement = jQuery(element);
+        var currentDate = parseInt(myElement.text()) * 1000;
+        myElement.text(moment(currentDate).tz(userTimezone).format('LL LTS'));
+    });
+
+
+{/literal}
+    //escaping "literal" to get the smarty value of the last_notification
+    var value = "{$service_data.last_notification}";
+{literal}
+    if (value == "" || value == "N/A"){
+        jQuery("#last_notification_value").text(value);
+    }else{
+        jQuery("#last_notification_value").text(moment(value).tz(userTimezone).format('LL LTS'));
+    }
+    //console.log(value);
+
+
+
 </script>
 {/literal}

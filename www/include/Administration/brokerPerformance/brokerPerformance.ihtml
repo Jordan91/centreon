@@ -18,7 +18,13 @@
     {foreach from=$perf_info_array item=perf_info key=conf_name}
     <tr>
         <td class='list_lvl_1' colspan='2'>
-            <p>{$conf_name}&nbsp;<span class="broker_stats_lastmodif">{$lang.updated}:&nbsp;{$perf_info.lastmodif}</span></p>
+            <p>{$conf_name}&nbsp;
+
+                <!-- uniformisation date -->
+                <span class="broker_stats_lastmodif" > {$lang.updated}&nbsp;:
+                    <span class="isTimestamp"> {$perf_info.lastmodif}</span>
+                </span>
+            </p>
         </td>
     </tr>
     <tr>
@@ -48,7 +54,7 @@
                         {if $info_key != 'State' && $info_key != 'type' && $info_key != 'peers' && $info_key != 'filters' && $info_key != 'class' && $info_key != 'state_style' && $info_key != 'id'}
                         <div class="informations">
                             <p class="info_name">{$info_key}</p>
-                            <p class="info_value">{$info_value}</p>
+                            <p class="info_value {if $info_value.isTimestamp eq 'true'}isTimestamp{/if}">{$info_value.value}</p>
                         </div>
                         {/if}
                     {/foreach}
@@ -102,4 +108,20 @@
         });
     }
 </script>
+
+<script type='text/javascript'>
+
+    // get locale GMT preferences from localStorage
+    var userTimezone = localStorage.getItem('realTimezone');
+
+    // use of moment() to format dates on foreach occurences
+    jQuery(".isTimestamp").each(function(index, element) {
+        var myElement = jQuery(element);
+        var currentDate = parseInt(myElement.text()) * 1000;
+        myElement.text(moment(currentDate).tz(userTimezone).format('LL LTS'));
+    });
+</script>
+
+
+
 {/literal}

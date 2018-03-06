@@ -94,7 +94,9 @@
 		{/if}
 	</div>
 	<div class="container">
-		<span id="date">{$Date}</span>
+		<!-- insertion date en momentJS -->
+
+		<span id="date"></span>
 		<img id="sound_status" src="./img/icons/speaker_{$sound_status}.png" style="cursor:pointer;vertical-align: bottom;" onClick="{$sound_action}">
 	</div>
 	<div id="centreonMsg"></div>
@@ -108,5 +110,9 @@ function toggleHeader()
 {
 	new Effect.toggle('header', 'appear', { afterFinish: function() { setQuickSearchPosition(); }});
 }
-</script>
+
 {/literal}
+
+localStorage.setItem('locale', '{$myLocale}');
+
+</script>

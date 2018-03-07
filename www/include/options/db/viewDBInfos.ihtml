@@ -38,7 +38,9 @@
                             {foreach from=$item item=partition}
                                 <tr class={cycle values="list_one, list_two"}>
                                     <td class="FormRowField">{$partition.PARTITION_NAME}</td>
-                                    <td class="FormRowValue">{$partition.CREATE_TIME}</td>
+                                    <!-- converting the db formatted date to timestamp-->
+                                    <!-- it may be useful to replace strtotime with strptime(<date>,<format>) if the format don't change at all -->
+                                    <td class="FormRowValue isTimestamp">{$partition.CREATE_TIME|strtotime}</td>
                                     <td class="FormRowValue">{$partition.TABLE_ROWS}</td>
                                     <td class="FormRowValue">{$partition.DATA_LENGTH} {t}MB{/t}</td>
                                     <td class="FormRowValue">{$partition.INDEX_LENGTH} {t}MB{/t}</td>
@@ -103,3 +105,23 @@
         </td>
     </tr>
 </table>
+
+
+{literal}
+
+    <script type='text/javascript'>
+
+        // get locale GMT preferences from localStorage
+        var userTimezone = localStorage.getItem('realTimezone');
+
+        // use of moment() to format dates on each occurence
+        jQuery(".isTimestamp").each(function(index, element) {
+            var myElement = jQuery(element);
+            var currentDate = parseInt(myElement.text()) * 1000;
+            if (!isNaN(currentDate)){
+                myElement.text(moment(currentDate).tz(userTimezone).format('LL LTS'));
+            }
+        });
+    </script>
+
+{/literal}

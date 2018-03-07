@@ -903,6 +903,8 @@ var func_popupXsltCallback = function(trans_obj) {
     jQuery('.popup_volante').css('top', (jQuery(window).height() / 2) - (jQuery('#' + target_element).height() / 2));
     jQuery('#' + target_element).show();
 <?php } ?>
+
+    formatDateMoment();
 };
 
 var func_displayPOPUP = function(event) {
@@ -1056,3 +1058,23 @@ function isset(variable) {
         return false;
     }
 }
+
+// get locale GMT preference from localStorage
+var userTimezone = localStorage.getItem('realTimezone');
+
+// use of moment() to format dates for each occurence
+function formatDateMoment() {
+    jQuery(".isTimestamp").each(function(index, element) {
+        var myElement = jQuery(element);
+        var currentDate = parseInt(myElement.text()) * 1000;
+        if (!isNaN(currentDate)){
+            if (myElement.hasClass("isTime")) {
+                myElement.text(moment(currentDate).tz(userTimezone).format('LTS'));
+            } else if (myElement.hasClass("isDate")) {
+                myElement.text(moment(currentDate).tz(userTimezone).format('LL'));
+            } else {
+                myElement.text(moment(currentDate).tz(userTimezone).format('LL LTS'));
+            }
+        }
+    });
+};

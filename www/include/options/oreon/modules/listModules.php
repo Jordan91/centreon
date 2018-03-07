@@ -126,7 +126,7 @@ while (false !== ($filename = readdir($handle))) {
                 } else {
                     $zend_info = parse_zend_license_file(_CENTREON_PATH_ . "www/modules/" . $filename . "/license/merethis_lic.zl");
                 }
-                $license_expires = date("d/m/Y", strtotime($zend_info['Expires']));
+                $license_expires = strtotime($zend_info['Expires']);
             } else {
                 $license_expires = "N/A";
             }
@@ -194,7 +194,7 @@ while (false !== ($filename = readdir($handle))) {
                     } else {
                         $zend_info = parse_zend_license_file(_CENTREON_PATH_ . "www/modules/" . $filename . "/license/merethis_lic.zl");
                     }
-                    $license_expires = date("d/m/Y", strtotime($zend_info['Expires']));
+                    $license_expires = strtotime($zend_info['Expires']);
                 } else {
                     $license_expires = "N/A";
                 }

@@ -39,7 +39,6 @@ Dans le cas où des relations de parentés ont été définies entre hôtes supe
 * D'empêcher l'établissement d'une relation de parenté, lors de la modification du formulaire d’hôte, entre deux hôtes supervisés par deux collecteurs différents.
 * D'autoriser l'établissement de cette relation de parenté. Dans ce cas la dépendance ne sera pas gérée par les moteurs de supervision mais par Centreon Broker qui prendra en compte cette relation au sein de son moteur de corrélation.
 
-Pour empêcher l'établissement de cette relation de parenté, il est nécessaire de cocher la case **Activer le mode strict de gestion des relations de parentés** au sein du menu **Administration** ==> **Options**.
 
 A l'inverse si cette case n'est pas cochée alors les liens de parenté entre hôtes appartenant à deux collecteurs différents peuvent être établis.
 

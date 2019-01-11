@@ -42,6 +42,13 @@ DBMS
 | MySQL    | >= 5.6.16  |
 +----------+------------+
 
+!! Since MySQL version 5.7 and  MariaDB >= 10.2  strict-mode must be disabe !!
+
+File .cnf for mysql server :
+
+[mysqld]
+sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"  
+
 Dependent software
 ==================
 

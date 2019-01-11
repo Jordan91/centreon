@@ -43,6 +43,14 @@ SGBD
 | MySQL    | >= 5.6.16  |
 +----------+------------+
 
+!! Attention à partir des versions MySQL 5.7 et MariaDB >= 10.2 le strict-mode doit être désactivé !!
+
+Fichier .cnf du serveur :
+
+[mysqld]
+sql-mode="NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"  
+
+
 Dépendances logicielles
 =======================
 
